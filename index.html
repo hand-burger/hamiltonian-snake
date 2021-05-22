@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <title>Snake</title>
+    </head>
+    <body onload="refresh_path()">
+        <script src="app.js"></script>
+        <canvas id="myCanvas" height="400px" width="400px"></canvas>
+        <p id="header-left"><u>About the game</u></p>
+        <p id="body-text">This game of snake generates a hamiltonian circuit to always<br> win by filling out the canvas. This javascript program is an<br> implementation of a hamiltonian path and circuit generator by<br> Nathan Clisby on an n * n grid, into a game of snake.</p>
+        <p id="pHeader"><u>Progress</u></p>
+        <progress id="progress" max="400" value="0"></progress>
+        <p id="outOf">0 out of 400</p>
+    </body>
+</html>
