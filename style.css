@@ -1,0 +1,34 @@
+p{
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+body{
+    margin: 0;
+}
+canvas{
+    display: block;
+    margin: auto;
+    margin-top: 5%;
+}
+#header-left{
+    font-size: 15px;
+    margin-top: -31%;
+    margin-left: 5%;
+}
+#body-text{
+    margin-left: 4%;
+    margin-top: 1%;
+}
+html{
+    background-color: #1e90ff;
+}
+progress{
+    margin-left: 80%;
+    background-color:"red";
+}
+#pHeader{
+    margin-left: 75%;
+    font-size: 15px;
+}
+#outOf{
+    margin-left: 78%;
+}
