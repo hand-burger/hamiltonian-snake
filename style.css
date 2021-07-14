@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
 canvas{
     margin: auto;
     display: block;
     float: right;
+    padding: 3vh;
+}
+body{
+    font-family: 'IBM Plex Mono', monospace;
 }
 #main-text{
     color: slategray;

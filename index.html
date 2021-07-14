@@ -5,7 +5,7 @@
         <link rel='shortcut icon' href='favicon.png'>
         <link rel='stylesheet' href='style.css'>
     </head>
-    <body onload='refresh_path()' style="background-color: rgb(44, 44, 44);">
+    <body onload='refresh_path()' style="background-color: rgb(44, 44, 44);" id='bod'>
         <script src='app.js'></script>
         <p id='about'>About the game</p>
         <p id='main-text'>This game of snake generates a hamiltonian circuit to always
@@ -17,6 +17,6 @@
         <p id='text'>Progress: </p>
         <progress id='progress' value='0' max='400'></progress>
         <p id='outOf'></p>
-        <canvas id="path_canvas" width="600px" height="600px"></canvas>
+        <canvas id="path_canvas"></canvas>
     </body>
 </html>

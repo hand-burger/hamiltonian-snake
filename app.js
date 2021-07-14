@@ -206,11 +206,11 @@ function generate_hamiltonian_circuit(n,q){
     return path;
 }
 
-function draw_path(ctx, path){
+function draw_path(ctx, path, y, square){
     ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, 600, 600);
+    ctx.fillRect(0, 0, y, y);
     ctx.fillStyle = "red";
-    ctx.fillRect(appleX * 30, appleY * 30, 30, 30);
+    ctx.fillRect(appleX * square, appleY * square, square, square);
 
     // add to the start of snake array the values from path
 	snakeX.unshift(path[pos][0]);
@@ -243,7 +243,7 @@ function draw_path(ctx, path){
 		{
 			ctx.fillStyle = "green";
 		}
-		ctx.fillRect(snakeX[i] * 30, snakeY[i] * 30, 30, 30);
+		ctx.fillRect(snakeX[i] * square, snakeY[i] * square, square, square);
 	}
 	if (!apple){
         // because its continuing to grow either way it checks the apple isn't collected so it removes the last square from the chain
@@ -272,13 +272,28 @@ function progBar(){
     document.getElementById('outOf').innerHTML = `${progress} out of 400`;
 }
 
-function update(ctx, path){
-    draw_path(ctx, path);
+function update(ctx, path, y, square){
+    draw_path(ctx, path, y, square);
     progBar();
 }
 
 function refresh_path(){
     //start here
+    var win = window,
+    doc = document,
+    docElem = doc.documentElement,
+    body = doc.getElementsByTagName('body')[0],
+    x = win.innerWidth || docElem.clientWidth || body.clientWidth,
+    y = win.innerHeight|| docElem.clientHeight|| body.clientHeight;
+    alert(x + ' x ' + y);
+    y = Math.ceil(y *= 0.75);
+    document.getElementById('path_canvas').width = y;
+    document.getElementById('path_canvas').height = y;
+    var square = y/20;
+    var font = y*0.03;
+
+    document.getElementById('bod').style.fontSize = font + 'px';
+
     var canvas = document.getElementById('path_canvas');
     var ctx = canvas.getContext('2d');
     var n = 20;
@@ -292,6 +307,6 @@ function refresh_path(){
     console.log(path);
 
     //for drawing the game
-    var interval = setInterval(function() {update(ctx, path); }, speed);
+    var interval = setInterval(function() {update(ctx, path, y, square); }, speed);
     return;
 }
