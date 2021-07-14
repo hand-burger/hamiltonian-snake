@@ -285,7 +285,7 @@ function refresh_path(){
     body = doc.getElementsByTagName('body')[0],
     x = win.innerWidth || docElem.clientWidth || body.clientWidth,
     y = win.innerHeight|| docElem.clientHeight|| body.clientHeight;
-    alert(x + ' x ' + y);
+    // alert(x + ' x ' + y);
     y = Math.ceil(y *= 0.75);
     document.getElementById('path_canvas').width = y;
     document.getElementById('path_canvas').height = y;
