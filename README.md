@@ -1,4 +1,4 @@
-# hamiltonian-snake
+# Hamiltonian Snake
 Game of snake which plays itself based off the algorithm-generated hamiltonian circuit. 
 This odd snake game is not like the others. In this game you are not the player, rather an observer of 
 this perfectionist snake as it continuously follows a specific generated circuit which is unique with 
