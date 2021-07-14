@@ -4,136 +4,235 @@ var appleY = Math.floor(Math.random() * 20);
 var apple = false;
 var snakeX = [];
 var snakeY = [];
-var path;
-var c;
-var ctx;
-var speed = 1;
 var progress = 0;
-function backbite(n, path) {
-  var i; 
-  var j;
-  var x; 
-  var y;
-  var dx;
-  var dy;
-  var xedge;
-  var yedge;
-  var iedge;
-  var add_edge;
-  var success;
-  var temp;
-  const itemp = Math.floor(Math.random() * 2);
-  const nsq = n * n;
+var randX = 0;
+var randY = 0;
+var apples = [];
+var snake = [];
 
-  x = path[nsq - 1][0];
-  y = path[nsq - 1][1];
-  xedge = ((x == 0) || (x == n - 1));
-  yedge = ((y == 0) || (y == n - 1));
-  if (xedge && yedge) {
-    add_edge = Math.floor(Math.random() * 3) - 2;
-  } else if (xedge || yedge) {
-    add_edge = Math.floor(Math.random() * 3) - 1;
-  } else {
-    add_edge = Math.floor(Math.random() * 3);
-  }
-  success = (add_edge >= 0);
-  iedge = 0;
-  i = nsq - 4;
-  while (iedge <= add_edge) {
-    dx = Math.abs(x - path[i][0]);
-    dy = Math.abs(y - path[i][1]);
-    if (dx + dy == 1) {
-      if (iedge == add_edge) {
-        const jlim = (nsq - 1 - i - 1) / 2;
-        for (j = 0; j < jlim; j++) {
-          temp = path[nsq - 1 - j];
-          path[nsq - 1 - j] = path[i + 1 + j];
-          path[i + 1 + j] = temp;
+function backbite(n,path){
+    var i, j;
+    var x, y;
+    var dx, dy;
+    var xedge, yedge;
+    var iedge, add_edge;
+    var success;
+    // Choose one of the two endpoints at random.
+    // Identify whether it is on the edge or not
+    // Decide which edge will be added (if any)
+    // Traverse walk, updating path
+    var itemp=Math.floor(Math.random()*2);
+    // Pre-compute n*n
+    var nsq = n*n;
+    if (itemp == 0)
+    {
+        // start at end: path[0]
+        x = path[0][0];
+        y = path[0][1];
+        xedge = ((x == 0) || (x == n-1));
+        yedge = ((y == 0) || (y == n-1));
+        if (xedge && yedge)
+        {
+            // corner
+            // 1/3 acceptance probability
+            add_edge = Math.floor(Math.random()*3) - 2;
         }
-      }
-      iedge++;
+        else if (xedge || yedge)
+        {
+            // edge
+            // 2/3 acceptance probability
+            add_edge = Math.floor(Math.random()*3) - 1;
+        }
+        else
+        {
+            // interior
+            add_edge = Math.floor(Math.random()*3);
+        }
+        success = (add_edge >= 0);
+        iedge = 0;
+        i = 3;
+        while(iedge<=add_edge)
+        {
+            dx = Math.abs(x - path[i][0]);
+            dy = Math.abs(y - path[i][1]);
+            if (dx+dy == 1)
+            {
+                // we have found an empty edge
+                if (iedge == add_edge)
+                {
+                    // This is the edge we wish to add.
+                    // reverse the walk from 0 to i-1
+                    var jlim = (i-1)/2;
+                    for (j=0; j<jlim; j++)
+                    {
+                        temp = path[j];
+                        path[j] = path[i-1-j];
+                        path[i-1-j] = temp;
+                    }
+                }
+                iedge++;
+            }
+            // Can increment i by 2 due to bipartite nature of square
+            // lattice
+            // Even better: can increment by larger steps, but still
+            // ensure that we never miss a neighbour
+            i += Math.max(2,dx+dy-1);
+        }
     }
-    i -= Math.max(2, dx + dy - 1);
-  }
-  return success;
-}
-
-function generate_hamiltonian_path(n, q) {
-  const path = new Array(n * n);
-  var i; var j;
-  var nsuccess; var
-    nattempts;
-  for (i = 0; i < n; i++) {
-    if (i % 2 == 0) {
-      for (j = 0; j < n; j++) {
-        path[i * n + j] = [i, j];
-      }
-    } else {
-      for (j = 0; j < n; j++) {
-        path[i * n + j] = [i, n - j - 1];
-      }
+    else
+    {
+        // start at end: path[nsq-1]
+        x = path[nsq-1][0];
+        y = path[nsq-1][1];
+        xedge = ((x == 0) || (x == n-1));
+        yedge = ((y == 0) || (y == n-1));
+        if (xedge && yedge)
+        {
+            // corner
+            // 1/3 acceptance probability
+            add_edge = Math.floor(Math.random()*3) - 2;
+        }
+        else if (xedge || yedge)
+        {
+            // edge
+            // 2/3 acceptance probability
+            add_edge = Math.floor(Math.random()*3) - 1;
+        }
+        else
+        {
+            // interior
+            add_edge = Math.floor(Math.random()*3);
+        }
+        success = (add_edge >= 0);
+        iedge = 0;
+        i = nsq-4;
+        while(iedge<=add_edge)
+        {
+            dx = Math.abs(x - path[i][0]);
+            dy = Math.abs(y - path[i][1]);
+            if (dx+dy == 1)
+            {
+                // we have found an empty edge
+                if (iedge == add_edge)
+                {
+                    // This is the edge we wish to add.
+                    // reverse the walk from i+1 to n*n-1
+                    var jlim = (nsq-1-i-1)/2;
+                    for (j=0; j<jlim; j++)
+                    {
+                        temp = path[nsq-1-j];
+                        path[nsq-1-j] = path[i+1+j];
+                        path[i+1+j] = temp;
+                    }
+                }
+                iedge++;
+            }
+            // Can decrement i by 2 due to bipartite nature of square lattice
+            // Even better: can increment by larger steps, but still
+            // ensure that we never miss a neighbour
+            i -= Math.max(2,dx+dy-1);
+        }
     }
-  }
-  nsuccess = 0;
-  nattempts = 0;
-  var nmoves = q * 10.0 * n * n * Math.pow(Math.log(2.0 + n), 2);
-  while (nsuccess < nmoves) {
-    var success = backbite(n, path);
-    if (success){ 
-	nsuccess++;
-    nattempts++;
-	}
-  }
-  for (i = 0; i < nattempts; i++) {
-    success = backbite(n, path);
-  }
-  return path;
-}
-function generate_hamiltonian_circuit(n, q) {
-  const path = generate_hamiltonian_path(n, q);
-  const nsq = n * n;
-  const min_dist = 1 + (n % 2);
-  while (Math.abs(path[nsq - 1][0] - path[0][0]) + Math.abs(path[nsq - 1][1] - path[0][1]) !== min_dist) {
-    success = backbite(n, path);
-  }
-  return path;
+    return success;
 }
 
-function drawGrid(){
-ctx.strokeStyle = "black";
-for (var i = 1; i <= 20; i++){
-	ctx.moveTo(i * 20, 0);
-	ctx.lineTo(i * 20, 400);
-	ctx.stroke();
-	ctx.moveTo(0, i * 20);
-	ctx.lineTo(400, i * 20);
-	ctx.stroke();
-}
+function generate_hamiltonian_path(n,q){
+    var path = new Array(n*n);
+    var i, j;
+    var nsuccess, nattempts;
+    for (i=0; i<n; i++){
+        if (i % 2 == 0){
+            for (j=0; j<n; j++){
+                path[i*n+j] = [i,j];
+            }
+        }
+        else{
+            for (j=0; j<n; j++){
+                path[i*n+j] = [i,n-j-1];
+            }
+        }
+    }
+    //Now we attempt to apply backbite move repeatedly
+    // Our stopping criterion is that we want the random
+    // walk to have `covered' the whole grid.
+    // 20*n*n successful moves is clearly not enough,
+    // by inspection on 100x100 grid.
+    // Take 10*n*n*n. By inspection this is enough, but slow.
+    // Relevant time for equilibrium is the cover time for an nxn grid.
+    // This is O(n^2 log^2 n)
+    // So ... could take const. * n^2 * log^2 n
+    // By inspection, this does a good job, and is asymptotically faster
+    // than previous proposol of O(n^3)
+    nsuccess = 0;
+    nattempts = 0;
+    // Constant factor is a guess which is based on appearance - could
+    // experiment with making factor a bit smaller than 10.0, e.g. 5.0
+    // for faster run time, or maybe doubling it to 20.0 to ensure that
+    // the resulting path is truly random.
+    // For this reason, quality factor q introduced for
+    // user to manipulate.
+    nmoves = q*10.0 * n * n * Math.pow(Math.log(2.+n),2);
+
+    while(nsuccess < nmoves)
+    {
+        success = backbite(n,path);
+        if (success) nsuccess++;
+        nattempts++;
+    }
+
+    // Now we apply the same number of attempts.
+    // N.B.: if we just tested the number of successful moves then the
+    // result would be biased. (i.e. not truly 'random'), because it
+    // would be conditional on the last attempted move being successful
+    for (i=0; i<nattempts; i++)
+    {
+        success = backbite(n,path);
+    }
+    return path;
 }
 
-function clearCanvas(){
-	ctx.clearRect(0, 0, 400, 400);
+function generate_hamiltonian_circuit(n,q){
+    //run the hamiltonian path generator function to get an array of values for a path
+    var path = generate_hamiltonian_path(n,q);
+    var nsq = n*n;
+    var success;
+    var min_dist = 1 + (n % 2);
+
+    //while path is not a circuit it does the backbite algorithm, checks to insure it's not already a circuit
+    while (Math.abs(path[nsq-1][0] - path[0][0]) + Math.abs(path[nsq-1][1] - path[0][1]) != min_dist){
+        //run the backbite algorithm to turn the path from the previous function to a circuit
+        success = backbite(n,path);
+    }
+    return path;
 }
-function drawRect(){
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, 400, 400);
+
+function draw_path(ctx, path){
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, 600, 600);
     ctx.fillStyle = "red";
-    ctx.fillRect(appleX * 20, appleY * 20, 20, 20);
+    ctx.fillRect(appleX * 30, appleY * 30, 30, 30);
+
+    // add to the start of snake array the values from path
 	snakeX.unshift(path[pos][0]);
 	snakeY.unshift(path[pos][1]);
+
 	if(snakeX[0] == appleX && snakeY[0] == appleY){
+        // apple collected because they on the same grid square
 		apple = true;
 	}
 	else
 	{
 		apple = false;
 	}
+
     if(pos < 399){
-    pos++;
+        pos++;
     }else{
         pos = 0;
     }
+
 	ctx.fillStyle = "green";
+
 	for (var i = 0; i < snakeX.length; i++)
 	{
 		if (i == 0)
@@ -144,41 +243,55 @@ function drawRect(){
 		{
 			ctx.fillStyle = "green";
 		}
-		ctx.fillRect(snakeX[i] * 20, snakeY[i] * 20, 20, 20);
+		ctx.fillRect(snakeX[i] * 30, snakeY[i] * 30, 30, 30);
 	}
-	if (!apple)
-	{
+	if (!apple){
+        // because its continuing to grow either way it checks the apple isn't collected so it removes the last square from the chain
 		snakeX.pop();
 		snakeY.pop();
 	}
 	else{
+        apples.length = 0;
+        apples.push(appleX, appleY);
         if(progress == 400){
+            // if score gets to 400 it stays there instead of continuing past
             progress = 400;
         }else{
             progress++;
+            //console.log(progress);
         }
+        // spawn new apple and ensure there isnt any snake there already
 		appleX = Math.floor(Math.random() * 20);
 		appleY = Math.floor(Math.random() * 20);
-	}
+        //to get an array of all points of snake take the path array up to progress-1
+    }
 }
-function pBar(){
-    document.getElementById("progress").value = progress;
-    document.getElementById("outOf").innerHTML = `${progress} out of 400`;
-}
-function update(){
-	clearCanvas();
-	drawRect();
-    pBar();
-	}
 
-function refresh_path() {
-  myCanvas = document.getElementById("myCanvas");
-  ctx = myCanvas.getContext("2d");
-  var myWidth = 400;
-  var myHeight = 400;
-  const n = 20;
-  const q = 1;
-  path = generate_hamiltonian_circuit(n, q);
-  var interval = setInterval(function(){update();}, speed);
-  return;
+function progBar(){
+    document.getElementById('progress').value = progress;
+    document.getElementById('outOf').innerHTML = `${progress} out of 400`;
+}
+
+function update(ctx, path){
+    draw_path(ctx, path);
+    progBar();
+}
+
+function refresh_path(){
+    //start here
+    var canvas = document.getElementById('path_canvas');
+    var ctx = canvas.getContext('2d');
+    var n = 20;
+    var q = 1;
+    var speed = 1;
+    var path;
+
+    //run the hamiltonian circuit function
+    path = generate_hamiltonian_circuit(n ,q);
+
+    console.log(path);
+
+    //for drawing the game
+    var interval = setInterval(function() {update(ctx, path); }, speed);
+    return;
 }

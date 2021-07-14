@@ -1,16 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" href="style.css">
-        <title>Snake</title>
+        <title>Hamiltonian Snake</title>
+        <link rel='shortcut icon' href='favicon.png'>
+        <link rel='stylesheet' href='style.css'>
     </head>
-    <body onload="refresh_path()">
-        <script src="app.js"></script>
-        <canvas id="myCanvas" height="400px" width="400px"></canvas>
-        <p id="header-left"><u>About the game</u></p>
-        <p id="body-text">This game of snake generates a hamiltonian circuit to always<br> win by filling out the canvas. This javascript program is an<br> implementation of a hamiltonian path and circuit generator by<br> Nathan Clisby on an n * n grid, into a game of snake.</p>
-        <p id="pHeader"><u>Progress</u></p>
-        <progress id="progress" max="400" value="0"></progress>
-        <p id="outOf">0 out of 400</p>
+    <body onload='refresh_path()' style="background-color: rgb(44, 44, 44);">
+        <script src='app.js'></script>
+        <p id='about'>About the game</p>
+        <p id='main-text'>This game of snake generates a hamiltonian circuit to always
+            win by filling out the entire canvas. This javascript program is an
+            implementation of a hamiltonian path and circuit generator by
+            Nathan Clisby on an n * n grid, into a game of snake. The program uses
+            the backbiting algorithm in order to generate the circuit which it follows.
+        </p>
+        <p id='text'>Progress: </p>
+        <progress id='progress' value='0' max='400'></progress>
+        <p id='outOf'></p>
+        <canvas id="path_canvas" width="600px" height="600px"></canvas>
     </body>
 </html>

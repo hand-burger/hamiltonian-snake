@@ -1,34 +1,23 @@
-p{
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
-}
-body{
-    margin: 0;
-}
 canvas{
-    display: block;
     margin: auto;
-    margin-top: 5%;
+    display: block;
+    float: right;
 }
-#header-left{
-    font-size: 15px;
-    margin-top: -31%;
-    margin-left: 5%;
+#main-text{
+    color: slategray;
 }
-#body-text{
-    margin-left: 4%;
-    margin-top: 1%;
+#about{
+    color: rgb(116, 122, 129);
+    text-decoration: underline;
 }
-html{
-    background-color: #1e90ff;
+#text{
+    color: slategray;
+    display: inline;
 }
-progress{
-    margin-left: 80%;
-    background-color:"red";
-}
-#pHeader{
-    margin-left: 75%;
-    font-size: 15px;
+#progress{
+    display: inline;
 }
 #outOf{
-    margin-left: 78%;
+    color: slategray;
+    display: inline;
 }
