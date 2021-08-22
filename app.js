@@ -260,10 +260,9 @@ function draw_path(ctx, path, y, square){
             progress++;
             //console.log(progress);
         }
-        // spawn new apple and ensure there isnt any snake there already
+        // spawn new apple
 		appleX = Math.floor(Math.random() * 20);
 		appleY = Math.floor(Math.random() * 20);
-        //to get an array of all points of snake take the path array up to progress-1
     }
 }
 
